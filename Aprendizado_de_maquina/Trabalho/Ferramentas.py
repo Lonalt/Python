@@ -48,5 +48,3 @@ def extrair_palavras_teste(documento):
         caracteristicas['%s' % palavras] = (palavras in doc)
     return caracteristicas
 
-if __name__ == "__main__":
-    print("Fim do programa ferramentas.py")

@@ -1,4 +1,4 @@
-import pandas as pandas
+import pandas
 import csv
 
 # Abre o arquivo para leitura
@@ -32,6 +32,4 @@ def gerar_csv(lista, nome_arquivo):
         for linha in lista:
             escritor.writerow(linha)
 
-if __name__ == "__main__":
-    print("Fim do programa dadosBrutos.py")
 
