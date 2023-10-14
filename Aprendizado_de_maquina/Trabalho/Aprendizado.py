@@ -5,7 +5,7 @@ import nltk
 from nltk.metrics import ConfusionMatrix
 from sklearn.metrics import classification_report
 
-def tratamento_Treinamento(treinamento):
+def tratamento_treinamento(treinamento):
     stopWords = ferramentas.criar_stopwords()
     frases_treinamento = ferramentas.aplicar_stemmer(treinamento)
     Palavras_treinamento = dadosBrutos.coletar_palavras(frases_treinamento)
@@ -13,7 +13,7 @@ def tratamento_Treinamento(treinamento):
     base_completa_treinamento = nltk.classify.apply_features(ferramentas.extrair_palavras, frases_treinamento)
     return base_completa_treinamento
 
-def tratamento_Teste(teste):
+def tratamento_teste(teste):
     stopWords = ferramentas.criar_stopwords()
     frases_teste = ferramentas.aplicar_stemmer(teste)
     Palavras_teste = dadosBrutos.coletar_palavras(frases_teste)
@@ -25,7 +25,7 @@ def classificador(base_completa_treinamento):
     classificador = nltk.NaiveBayesClassifier.train(base_completa_treinamento)
     return classificador
 
-def errosTotais(classificador, base_completa_teste):
+def erros_totais(classificador, base_completa_teste):
     erros = []
     for (frase, classe) in base_completa_teste:
         resultado = classificador.classify(frase)
@@ -55,7 +55,7 @@ def relatorio(classificador, base_completa_teste):
         esperado.append(classe)
     print(classification_report(esperado, previsto, target_names=['feliz', 'triste', 'neutro']))
 
-def matrizConfusao(classificador, base_completa_teste):
+def matriz_confusao(classificador, base_completa_teste):
     esperado = []
     previsto = []
     for (frase, classe) in base_completa_teste:
@@ -66,7 +66,7 @@ def matrizConfusao(classificador, base_completa_teste):
     return matriz
 
 
-def testeAutomatico(classificador):
+def teste_automatico(classificador):
     teste = [
                 'Viagens são bem simples e baratas.', #neutro
                 'Amores vem e vão, mas o que fica são as lembranças.', #triste
@@ -88,10 +88,9 @@ def testeAutomatico(classificador):
         novo = ferramentas.extrair_palavras(testeStemming)
         distribuição = classificador.prob_classify(novo)
         for classe in distribuição.samples():
-            print("{}: {:.5}".format(classe, distribuição.prob(classe)))
-        print()
+            print(f"{classe}: {distribuicao.prob(classe):.5}\n")
 
-def AnalisadorManual(classificador, frase):
+def analisador_manual(classificador, frase):
     testeStemming = []
     stemmer = nltk.stem.RSLPStemmer()
     for (palavras) in frase.split():
@@ -100,5 +99,6 @@ def AnalisadorManual(classificador, frase):
     novo = ferramentas.extrair_palavras(testeStemming)
     distribuicao = classificador.prob_classify(novo)
     for classe in distribuicao.samples():
-        print(f"{classe}: {distribuicao.prob(classe):.5}")
-    print()
+        print(f"{classe}: {distribuicao.prob(classe):.5}\n")
+
+

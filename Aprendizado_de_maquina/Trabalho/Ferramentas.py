@@ -6,7 +6,7 @@ import Dados as dadosBrutos
 
 # Separa a base de dados em treinamento e teste
 def separar_dados(indice):
-    Base_dados = dadosBrutos.abrir_arquivo_Base()
+    Base_dados = dadosBrutos.abrir_arquivo_base()
     treinamento, teste = sklearn.model_selection.train_test_split(Base_dados, test_size=0.3)
     dadosBrutos.gerar_csv(teste, "teste", indice)
     return treinamento, teste
@@ -74,12 +74,13 @@ def teste_t(vetor1, vetor2):
     t_statistic, p_value = stats.ttest_ind(vetor1, vetor2)
     t_statistic = round(t_statistic, 4)
     p_value = round(p_value, 12)
-    print(f"T-Statistic: {t_statistic}")
-    print(f"P-Value: {p_value}")
+    print("Teste T:")
+    print(f"\tT-Statistic: {t_statistic}")
+    print(f"\tP-Value: {p_value}")
 
     alpha = 0.05
     if p_value < alpha:
-        print("As médias são estatisticamente diferentes.")
+        print("\tAs médias são estatisticamente diferentes.")
     else:
-        print("Não há diferença estatística significativa entre as médias.")
+        print("\tNão há diferença estatística significativa entre as médias.")
 
