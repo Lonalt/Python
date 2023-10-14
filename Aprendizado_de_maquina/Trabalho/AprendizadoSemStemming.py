@@ -64,30 +64,15 @@ def matriz_confusao_sem_stemming(classificador, base_completa_teste):
     matriz = ConfusionMatrix(esperado, previsto)
     return matriz
 
-def teste_automatico_sem_stemming(classificador):
-    teste = [
-        'Viagens são bem simples e baratas.', #neutro
-        'Amores vem e vão, mas o que fica são as lembranças.', #triste
-        'Em uma manhã ensolarada de domingo, reuni meus amigos em um café à beira-mar para celebrar meu aniversário.', #feliz
-        'Depois de tanto esforço, finalmente consegui realizar meu sonho.', #feliz
-        'Viver é uma arte, e nem todos são artistas.', #neutro
-        'O céu estava nublado, mas o ar estava fresco e agradável para um passeio no parque.', #neutro
-        'Aquele dia foi o mais feliz da minha vida.', #feliz
-        'Ao olhar para trás, só consigo ver os momentos que perdi e as oportunidades que deixei escapar.', #triste
-        'Meu coração está partido.', #triste
-    ]
-    for i in teste:
-        print(i)
-        novo = ferramentas.extrair_palavras(i.split())
-        distribuição = classificador.prob_classify(novo)
-        for classe in distribuição.samples():
-            print(f"{classe}: {distribuicao.prob(classe):.5}\n")
-
-
 def analisador_manual_sem_stemming(classificador, frase):
-    novo = ferramentas.extrair_palavras(frase.split())
-    distribuição = classificador.prob_classify(novo)
-    for classe in distribuição.samples():
-        print(f"{classe}: {distribuicao.prob(classe):.5}\n")
+    teste_sem_stemming = []
+    for (palavras) in frase.split():
+        semStem = [p for p in palavras.split()]
+        teste_sem_stemming.append(str(semStem[0]))
+    novo = ferramentas.extrair_palavras_teste(teste_sem_stemming)
+    distribuicao = classificador.prob_classify(novo)
+    for classe in distribuicao.samples():
+        print(f"{classe}: {distribuicao.prob(classe):.5}")
+    print()
 
 

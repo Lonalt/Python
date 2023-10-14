@@ -58,15 +58,15 @@ def extrair_palavras_teste(documento):
 
 def media_vetor(vetor):
     media = np.mean(vetor)
-    media = round(media, 3)
-    print(media)
+    media = round(media, 2)
+    return media
 
 # calcula desvio padrao de vetor
 
 def desvio_padrao(vetor):
     dp = np.std(vetor)
-    dp = round(dp, 3)
-    print(dp)
+    dp = round(dp, 2)
+    return dp
 
 # Aplica o teste t
 
@@ -74,13 +74,13 @@ def teste_t(vetor1, vetor2):
     t_statistic, p_value = stats.ttest_ind(vetor1, vetor2)
     t_statistic = round(t_statistic, 4)
     p_value = round(p_value, 12)
-    print("Teste T:")
+    print("\n\t\tTeste T:\n")
     print(f"\tT-Statistic: {t_statistic}")
     print(f"\tP-Value: {p_value}")
 
     alpha = 0.05
     if p_value < alpha:
-        print("\tAs médias são estatisticamente diferentes.")
+        print("\n\tAs médias são estatisticamente diferentes.")
     else:
-        print("\tNão há diferença estatística significativa entre as médias.")
+        print("\n\tNão há diferença estatística significativa entre as médias.")
 
