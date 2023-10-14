@@ -72,9 +72,15 @@ def tags_SemStemming(classificador, solicitado):
 
 def testeAutomatico_SemStemming(classificador):
     teste = [
-        'Viagens são bem simples e baratas.',
-        'Amores vem e vão, mas o que fica são as lembranças.',
-        'Em uma manhã ensolarada de domingo, reuni meus amigos em um café à beira-mar para celebrar meu aniversário.'
+        'Viagens são bem simples e baratas.', #neutro
+        'Amores vem e vão, mas o que fica são as lembranças.', #triste
+        'Em uma manhã ensolarada de domingo, reuni meus amigos em um café à beira-mar para celebrar meu aniversário.', #feliz
+        'Depois de tanto esforço, finalmente consegui realizar meu sonho.', #feliz
+        'Viver é uma arte, e nem todos são artistas.', #neutro
+        'O céu estava nublado, mas o ar estava fresco e agradável para um passeio no parque.', #neutro
+        'Aquele dia foi o mais feliz da minha vida.', #feliz
+        'Ao olhar para trás, só consigo ver os momentos que perdi e as oportunidades que deixei escapar.', #triste
+        'Meu coração está partido.', #triste
     ]
     for i in teste:
         print(i)
