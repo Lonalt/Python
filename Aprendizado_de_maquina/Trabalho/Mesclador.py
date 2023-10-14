@@ -26,6 +26,7 @@ def gerador_De_Classificadores():
         print(f"Classificadores {i} gerados e salvos com sucesso.")
 
     print("Processo de geração de bases e classificadores concluído.")
+    print()
 
 def analiseErros():
     erros_CS = []
@@ -160,38 +161,34 @@ def geradorMatriz(selecao):
         matrizSS = apSS.matriz_Confusao_SemStemming(classificadorSS, testeSS)
         print(matrizSS)
 
-system("clear")
-# #gerador_De_Classificadores()
-# erros_CS, erros_SS = analiseErros()
+def analizador_Comparador():
+    frases = []
+    quantidade = 0
+    print("Digite as frases que deseja analisar:")
+    quantidade = int(input())
+    for i in range(0, quantidade):
+        print(f"Digite a frase {i+1}:")
+        frases.append(input())
+    print()
+    for i in frases:
+        print(f"Analisando a frase: {i}")
+        print("Com stemming:\n")
+        for j in range(1, 11):
+            with open(f'Classificadores/classificador_com_stemming_{j}.pkl', 'rb') as f:
+                classificadorCS = pickle.load(f)
+                apCS.AnalisadorManual(classificadorCS, i)
+        print("Sem stemming:\n")
+        for j in range(1, 11):
+            with open(f'Classificadores/classificador_sem_stemming_{j}.pkl', 'rb') as f:
+                classificadorSS = pickle.load(f)
+                apSS.AnalisadorManual_SemStemming(classificadorSS, i)
 
-# #print(f"Erros com stemming: {erros_CS}")
-# erro_Medio_CS = ferramentas.media_vetor(erros_CS)
-# print(f"Erro médio com stemming: {erro_Medio_CS}")
-# #print(f"Erros sem stemming: {erros_SS}")
-# erro_Medio_SS = ferramentas.media_vetor(erros_SS)
-# print(f"Erro médio sem stemming: {erro_Medio_SS}")
 
 
-# acuracia_CS, acuracia_SS = analiseAcuracia()
-# print(f"Acurácia com stemming: {acuracia_CS}")
 
-# print(f"Acurácia sem stemming: {acuracia_SS}")
 
-# precisao_CS, precisao_SS = analisePrecisão('feliz')
-# print(f"Precisão com stemming: {precisao_CS}")
-# print(f"Precisão sem stemming: {precisao_SS}")
 
-# recall_CS, recall_SS = analiseRecall('feliz')
-# print(f"Recall com stemming: {recall_CS}")
-# print(f"Recall sem stemming: {recall_SS}")
 
-# f1_CS, f1_SS = analiseF1('feliz')
-# print(f"F1 com stemming: {f1_CS}")
-# print(f"F1 sem stemming: {f1_SS}")
-
-geradorRelatorio(1)
-
-geradorMatriz(1)
 
 
 

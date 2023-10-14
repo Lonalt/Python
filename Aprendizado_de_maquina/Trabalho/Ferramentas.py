@@ -1,5 +1,6 @@
 import nltk
 import sklearn
+import numpy as np
 from scipy import stats
 import Dados as dadosBrutos
 
@@ -56,8 +57,29 @@ def extrair_palavras_teste(documento):
 # calcula media de vetor
 
 def media_vetor(vetor):
-    soma = 0
-    for i in vetor:
-        soma += i
-    return soma/len(vetor)
+    media = np.mean(vetor)
+    media = round(media, 3)
+    print(media)
+
+# calcula desvio padrao de vetor
+
+def desvio_padrao(vetor):
+    dp = np.std(vetor)
+    dp = round(dp, 3)
+    print(dp)
+
+# Aplica o teste t
+
+def teste_t(vetor1, vetor2):
+    t_statistic, p_value = stats.ttest_ind(vetor1, vetor2)
+    t_statistic = round(t_statistic, 4)
+    p_value = round(p_value, 12)
+    print(f"T-Statistic: {t_statistic}")
+    print(f"P-Value: {p_value}")
+
+    alpha = 0.05
+    if p_value < alpha:
+        print("As médias são estatisticamente diferentes.")
+    else:
+        print("Não há diferença estatística significativa entre as médias.")
 

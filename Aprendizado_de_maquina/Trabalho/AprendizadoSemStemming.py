@@ -64,11 +64,6 @@ def matriz_Confusao_SemStemming(classificador, base_completa_teste):
     matriz = ConfusionMatrix(esperado, previsto)
     return matriz
 
-def tags_SemStemming(classificador, solicitado):
-    print(classificador.labels())
-    print(classificador.show_most_informative_features(solicitado))
-    print()
-
 def testeAutomatico_SemStemming(classificador):
     teste = [
         'Viagens são bem simples e baratas.', #neutro
@@ -89,16 +84,11 @@ def testeAutomatico_SemStemming(classificador):
             print("{}: {:.5}".format(classe, distribuição.prob(classe)))
         print()
 
-def AnalisadorManual_SemStemming(classificador):
-    print('Digite a quantidade de testes que deseja realizar:')
-    solicitado = int(input())
-    for i in range(solicitado):
-        print('Digite a frase que deseja testar:')
-        frase = input()
-        novo = ferramentas.extrair_palavras(frase.split())
-        distribuição = classificador.prob_classify(novo)
-        for classe in distribuição.samples():
-            print("{}: {:.5}".format(classe, distribuição.prob(classe)))
-        print()
+def AnalisadorManual_SemStemming(classificador, frase):
+    novo = ferramentas.extrair_palavras(frase.split())
+    distribuição = classificador.prob_classify(novo)
+    for classe in distribuição.samples():
+        print("{}: {:.5}".format(classe, distribuição.prob(classe)))
+    print()
 
 

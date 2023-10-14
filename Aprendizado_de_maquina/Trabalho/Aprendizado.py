@@ -65,10 +65,6 @@ def matrizConfusao(classificador, base_completa_teste):
     matriz = ConfusionMatrix(esperado, previsto)
     return matriz
 
-def tags(classificador, solicitado):
-    print(classificador.labels())
-    print(classificador.show_most_informative_features(solicitado))
-    print()
 
 def testeAutomatico(classificador):
     teste = [
@@ -95,20 +91,14 @@ def testeAutomatico(classificador):
             print("{}: {:.5}".format(classe, distribuição.prob(classe)))
         print()
 
-def AnalisadorManual(classificador):
-    print('Digite a quantidade de testes que deseja realizar:')
-    solicitado = int(input())
-    for i in range(solicitado):
-        print('Digite a frase que deseja testar:')
-        frase = input()
-        
-        testeStemming = []
-        stemmer = nltk.stem.RSLPStemmer()
-        for palavras in frase.split():
-            comStem = [p for p in palavras.split()]
-            testeStemming.append(str(stemmer.stem(comStem[0])))
-        novo = ferramentas.extrair_palavras(testeStemming)
-        distribuição = classificador.prob_classify(novo)
-        for classe in distribuição.samples():
-            print("{}: {:.5}".format(classe, distribuição.prob(classe)))
-        print()
+def AnalisadorManual(classificador, frase):
+    testeStemming = []
+    stemmer = nltk.stem.RSLPStemmer()
+    for (palavras) in frase.split():
+        comStem = [p for p in palavras.split()]
+        testeStemming.append(str(stemmer.stem(comStem[0])))
+    novo = ferramentas.extrair_palavras(testeStemming)
+    distribuicao = classificador.prob_classify(novo)
+    for classe in distribuicao.samples():
+        print(f"{classe}: {distribuicao.prob(classe):.5}")
+    print()
