@@ -1,14 +1,12 @@
 import Dados as dadosBrutos
 import Ferramentas as ferramentas
-import os
 import nltk
 from nltk.metrics import ConfusionMatrix
-from sklearn.metrics import classification_report
 
-def tratamento(treinamento, teste):
+def tratamento_SemStemming(treinamento, teste):
     stopWords = ferramentas.criar_stopwords()
-    frases_treinamento = ferramentas.aplicar_stemmer(treinamento)
-    frases_teste = ferramentas.aplicar_stemmer(teste)
+    frases_treinamento = treinamento
+    frases_teste = teste
     Palavras_treinamento = dadosBrutos.coletar_palavras(frases_treinamento)
     Palavras_teste = dadosBrutos.coletar_palavras(frases_teste)
     frequencia_treinamento = ferramentas.frequencia_palavras(Palavras_treinamento)
@@ -17,11 +15,11 @@ def tratamento(treinamento, teste):
     base_completa_teste = nltk.classify.apply_features(ferramentas.extrair_palavras_teste, frases_teste)
     return base_completa_treinamento, base_completa_teste
 
-def classificador(base_completa_treinamento):
+def classificador_SemStemming(base_completa_treinamento):
     classificador = nltk.NaiveBayesClassifier.train(base_completa_treinamento)
     return classificador
 
-def errosTotais(classificador, base_completa_teste):
+def errosTotais_SemStemming(classificador, base_completa_teste):
     erros = []
     for (frase, classe) in base_completa_teste:
         resultado = classificador.classify(frase)
@@ -30,25 +28,25 @@ def errosTotais(classificador, base_completa_teste):
     print('Total de erros:', len(erros))
     print()
 
-def calcular_acuracia(classificador, base_completa_teste):
+def calcular_acuracia_SemStemming(classificador, base_completa_teste):
     print("Acurácia {:.2}".format(nltk.classify.accuracy(classificador, base_completa_teste)))
 
-def calcular_precisao(matriz):
+def calcular_precisao_SemStemming(matriz):
     print("Precisão Feliz {:.2}".format(ConfusionMatrix.precision(matriz, 'feliz')))
     print("Precisão Triste {:.2}".format(ConfusionMatrix.precision(matriz, 'triste')))
     print("Precisão Neutro {:.2}".format(ConfusionMatrix.precision(matriz, 'neutro')))
 
-def calcular_recall(matriz):
+def calcular_recall_SemStemming(matriz):
     print("Recall Feliz {:.2}".format(ConfusionMatrix.recall(matriz, 'feliz')))
     print("Recall Triste {:.2}".format(ConfusionMatrix.recall(matriz, 'triste')))
     print("Recall Neutro {:.2}".format(ConfusionMatrix.recall(matriz, 'neutro')))
 
-def calcular_f1(matriz):
+def calcular_f1_SemStemming(matriz):
     print("F1 Feliz {:.2}".format(ConfusionMatrix.f_measure(matriz, 'feliz')))
     print("F1 Triste {:.2}".format(ConfusionMatrix.f_measure(matriz, 'triste')))
     print("F1 Neutro {:.2}".format(ConfusionMatrix.f_measure(matriz, 'neutro')))
 
-def relatorio(classificador, base_completa_teste):
+def relatorio_SemStemming(classificador, base_completa_teste):
     esperado = []
     previsto = []
     for (frase, classe) in base_completa_teste:
@@ -57,7 +55,7 @@ def relatorio(classificador, base_completa_teste):
         esperado.append(classe)
     print(classification_report(esperado, previsto, target_names=['feliz', 'triste', 'neutro']))
 
-def matrizConfusao(classificador, base_completa_teste):
+def matriz_Confusao_SemStemming(classificador, base_completa_teste):
     esperado = []
     previsto = []
     for (frase, classe) in base_completa_teste:
@@ -67,45 +65,35 @@ def matrizConfusao(classificador, base_completa_teste):
     matriz = ConfusionMatrix(esperado, previsto)
     return matriz
 
-
-def tags(classificador, solicitado):
+def tags_SemStemming(classificador, solicitado):
     print(classificador.labels())
     print(classificador.show_most_informative_features(solicitado))
     print()
 
-def testeAutomatico(classificador):
+def testeAutomatico_SemStemming(classificador):
     teste = [
-                'Viagens são bem simples e baratas.',
-                'Amores vem e vão, mas o que fica são as lembranças.',
-                'Em uma manhã ensolarada de domingo, reuni meus amigos em um café à beira-mar para celebrar meu aniversário.'
-            ]
+        'Viagens são bem simples e baratas.',
+        'Amores vem e vão, mas o que fica são as lembranças.',
+        'Em uma manhã ensolarada de domingo, reuni meus amigos em um café à beira-mar para celebrar meu aniversário.'
+    ]
     for i in teste:
         print(i)
-        testeStemming = []
-        stemmer = nltk.stem.RSLPStemmer()
-        for (palavras) in i.split():
-            comStem = [p for p in palavras.split()]
-            testeStemming.append(str(stemmer.stem(comStem[0])))
-        novo = ferramentas.extrair_palavras(testeStemming)
+        novo = ferramentas.extrair_palavras(i.split())
         distribuição = classificador.prob_classify(novo)
         for classe in distribuição.samples():
             print("{}: {:.5}".format(classe, distribuição.prob(classe)))
         print()
 
-def AnalisadorManual(classificador):
+def AnalisadorManual_SemStemming(classificador):
     print('Digite a quantidade de testes que deseja realizar:')
     solicitado = int(input())
     for i in range(solicitado):
         print('Digite a frase que deseja testar:')
         frase = input()
-        
-        testeStemming = []
-        stemmer = nltk.stem.RSLPStemmer()
-        for palavras in frase.split():
-            comStem = [p for p in palavras.split()]
-            testeStemming.append(str(stemmer.stem(comStem[0])))
-        novo = ferramentas.extrair_palavras(testeStemming)
+        novo = ferramentas.extrair_palavras(frase.split())
         distribuição = classificador.prob_classify(novo)
         for classe in distribuição.samples():
             print("{}: {:.5}".format(classe, distribuição.prob(classe)))
         print()
+
+
