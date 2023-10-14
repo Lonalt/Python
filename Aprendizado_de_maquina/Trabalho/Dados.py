@@ -24,18 +24,6 @@ def abrir_arquivo_Base():
             Base_dados.append((frase.strip(), sentimento.strip()))
     return Base_dados
 
-def abrir_arquivo_Treinamento(indice):
-    current_directory = os.getcwd()
-    caminho = os.path.join(current_directory, "Arquivos", "treinamento" + indice + ".csv")    
-    with open(caminho, 'r', newline='', encoding='utf-8') as arquivo:
-        leitor = csv.reader(arquivo, delimiter=';')
-        next(leitor, None)
-        treinamento = []
-        for linha in leitor:
-            frase, sentimento = linha
-            treinamento.append((frase.strip(), sentimento.strip()))
-    return treinamento
-
 def abrir_arquivo_Teste(indice):
     current_directory = os.getcwd()
     caminho = os.path.join(current_directory, "Arquivos", "teste" + indice + ".csv")

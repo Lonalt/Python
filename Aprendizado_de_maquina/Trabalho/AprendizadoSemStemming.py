@@ -1,19 +1,25 @@
 import Dados as dadosBrutos
 import Ferramentas as ferramentas
+import os
 import nltk
 from nltk.metrics import ConfusionMatrix
+from sklearn.metrics import classification_report
 
-def tratamento_SemStemming(treinamento, teste):
+def tratamento_Treinamento_SemStemming(treinamento):
     stopWords = ferramentas.criar_stopwords()
     frases_treinamento = treinamento
-    frases_teste = teste
     Palavras_treinamento = dadosBrutos.coletar_palavras(frases_treinamento)
-    Palavras_teste = dadosBrutos.coletar_palavras(frases_teste)
     frequencia_treinamento = ferramentas.frequencia_palavras(Palavras_treinamento)
-    frequencia_teste = ferramentas.frequencia_palavras(Palavras_teste)
     base_completa_treinamento = nltk.classify.apply_features(ferramentas.extrair_palavras, frases_treinamento)
+    return base_completa_treinamento
+
+def tratamento_Teste_SemStemming(teste):
+    stopWords = ferramentas.criar_stopwords()
+    frases_teste = teste
+    Palavras_teste = dadosBrutos.coletar_palavras(frases_teste)
+    frequencia_teste = ferramentas.frequencia_palavras(Palavras_teste)
     base_completa_teste = nltk.classify.apply_features(ferramentas.extrair_palavras_teste, frases_teste)
-    return base_completa_treinamento, base_completa_teste
+    return base_completa_teste
 
 def classificador_SemStemming(base_completa_treinamento):
     classificador = nltk.NaiveBayesClassifier.train(base_completa_treinamento)
@@ -25,26 +31,19 @@ def errosTotais_SemStemming(classificador, base_completa_teste):
         resultado = classificador.classify(frase)
         if resultado != classe:
             erros.append((classe, resultado, frase))
-    print('Total de erros:', len(erros))
-    print()
+    return len(erros)
 
 def calcular_acuracia_SemStemming(classificador, base_completa_teste):
-    print("Acurácia {:.2}".format(nltk.classify.accuracy(classificador, base_completa_teste)))
+    return nltk.classify.accuracy(classificador, base_completa_teste)
 
-def calcular_precisao_SemStemming(matriz):
-    print("Precisão Feliz {:.2}".format(ConfusionMatrix.precision(matriz, 'feliz')))
-    print("Precisão Triste {:.2}".format(ConfusionMatrix.precision(matriz, 'triste')))
-    print("Precisão Neutro {:.2}".format(ConfusionMatrix.precision(matriz, 'neutro')))
+def calcular_precisao_SemStemming(matriz, tag):
+    return ConfusionMatrix.precision(matriz, tag)
 
-def calcular_recall_SemStemming(matriz):
-    print("Recall Feliz {:.2}".format(ConfusionMatrix.recall(matriz, 'feliz')))
-    print("Recall Triste {:.2}".format(ConfusionMatrix.recall(matriz, 'triste')))
-    print("Recall Neutro {:.2}".format(ConfusionMatrix.recall(matriz, 'neutro')))
+def calcular_recall_SemStemming(matriz, tag):
+    return ConfusionMatrix.recall(matriz, tag)
 
-def calcular_f1_SemStemming(matriz):
-    print("F1 Feliz {:.2}".format(ConfusionMatrix.f_measure(matriz, 'feliz')))
-    print("F1 Triste {:.2}".format(ConfusionMatrix.f_measure(matriz, 'triste')))
-    print("F1 Neutro {:.2}".format(ConfusionMatrix.f_measure(matriz, 'neutro')))
+def calcular_f1_SemStemming(matriz, tag):
+    return ConfusionMatrix.f_measure(matriz, tag)
 
 def relatorio_SemStemming(classificador, base_completa_teste):
     esperado = []

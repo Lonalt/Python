@@ -1,12 +1,12 @@
 import nltk
 import sklearn
+from scipy import stats
 import Dados as dadosBrutos
 
 # Separa a base de dados em treinamento e teste
 def separar_dados(indice):
     Base_dados = dadosBrutos.abrir_arquivo_Base()
     treinamento, teste = sklearn.model_selection.train_test_split(Base_dados, test_size=0.3)
-    dadosBrutos.gerar_csv(treinamento, "treinamento", indice)
     dadosBrutos.gerar_csv(teste, "teste", indice)
     return treinamento, teste
 
@@ -52,4 +52,12 @@ def extrair_palavras_teste(documento):
         caracteristicas['%s' % palavras] = (palavras in doc)
     return caracteristicas
 
+
+# calcula media de vetor
+
+def media_vetor(vetor):
+    soma = 0
+    for i in vetor:
+        soma += i
+    return soma/len(vetor)
 
