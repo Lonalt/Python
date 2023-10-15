@@ -1,5 +1,6 @@
 import nltk
 import sklearn
+import re
 import numpy as np
 from scipy import stats
 import Dados as dadosBrutos

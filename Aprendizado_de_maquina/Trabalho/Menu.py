@@ -207,6 +207,7 @@ class Menu:
         
     def resultado_analise(self):
         os.system('clear')
+        self.frases = []
         try:
             self.quantidade = int(input("Digite quantas frases deseja analisar: "))
             print()
