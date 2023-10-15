@@ -26,6 +26,14 @@ def aplicar_stemmer(frases):
         frasesStemming.append((comStemming, sentimento))
     return frasesStemming
 
+def aplicar_tratamento_sem_stemmer(frases):
+    stopWords = criar_stopwords()
+    frases_tratadas = []
+    for (palavras, sentimento) in frases:
+        palavras_sem_stemming = [p for p in palavras.split() if p not in stopWords]
+        frases_tratadas.append((palavras_sem_stemming, sentimento))
+    return frases_tratadas
+
 # frequencia das palavras
 def frequencia_palavras(palavras):
     return nltk.FreqDist(palavras)
@@ -52,7 +60,6 @@ def extrair_palavras_teste(documento):
     for palavras in palavras_frequentes:
         caracteristicas['%s' % palavras] = (palavras in doc)
     return caracteristicas
-
 
 # calcula media de vetor
 

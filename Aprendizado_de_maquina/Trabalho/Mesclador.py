@@ -162,15 +162,17 @@ def gerador_matriz(selecao):
         matrizSS = apSS.matriz_confusao_sem_stemming(classificadorSS, testeSS)
         print(matrizSS)
 
-def analizador_comparador():
-    frases = []
-    quantidade = 0
-    print("Digite as frases que deseja analisar:")
-    quantidade = int(input())
-    for i in range(0, quantidade):
-        print(f"Digite a frase {i+1}:")
-        frases.append(input())
-    print()
+def palavras_mais_informativas(selecao):
+    with open(f'Classificadores/classificador_com_stemming_{selecao}.pkl', 'rb') as f:
+        classificadorCS = pickle.load(f)
+        print("Com stemming:")
+        print(classificadorCS.show_most_informative_features(20))
+    with open(f'Classificadores/classificador_sem_stemming_{selecao}.pkl', 'rb') as f:
+        classificadorSS = pickle.load(f)
+        print("Sem stemming:")
+        print(classificadorSS.show_most_informative_features(20)) #
+
+def analizador_comparador(frases = []):
     for i in frases:
         print(f"Analisando a frase: {i}")
         print("Com stemming:\n")

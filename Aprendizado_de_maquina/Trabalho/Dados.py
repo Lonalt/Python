@@ -22,6 +22,7 @@ def abrir_arquivo_base():
         for linha in leitor:
             frase, sentimento = linha
             Base_dados.append((frase.strip(), sentimento.strip()))
+    arquivo.close()
     return Base_dados
 
 def abrir_arquivo_teste(indice):
@@ -34,6 +35,7 @@ def abrir_arquivo_teste(indice):
         for linha in leitor:
             frase, sentimento = linha
             teste.append((frase.strip(), sentimento.strip()))
+    arquivo.close()
     return teste
 
 # Coleta as palavras da base de dados
