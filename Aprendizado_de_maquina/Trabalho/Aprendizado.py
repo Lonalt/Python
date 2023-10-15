@@ -39,7 +39,6 @@ def calcular_acuracia(classificador, base_completa_teste):
 def calcular_precisao(matriz, tag):
     return ConfusionMatrix.precision(matriz, tag)
 
-
 def calcular_recall(matriz, tag):
     return ConfusionMatrix.recall(matriz, tag)
 

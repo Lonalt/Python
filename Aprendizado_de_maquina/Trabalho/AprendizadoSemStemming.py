@@ -7,7 +7,7 @@ from sklearn.metrics import classification_report
 
 def tratamento_treinamento_sem_stemming(treinamento):
     stopWords = ferramentas.criar_stopwords()
-    frases_treinamento = treinamento
+    frases_treinamento = ferramentas.aplicar_tratamento_sem_stemmer(treinamento)
     Palavras_treinamento = dadosBrutos.coletar_palavras(frases_treinamento)
     frequencia_treinamento = ferramentas.frequencia_palavras(Palavras_treinamento)
     base_completa_treinamento = nltk.classify.apply_features(ferramentas.extrair_palavras, frases_treinamento)
@@ -15,7 +15,7 @@ def tratamento_treinamento_sem_stemming(treinamento):
 
 def tratamento_teste_sem_stemming(teste):
     stopWords = ferramentas.criar_stopwords()
-    frases_teste = teste
+    frases_teste = ferramentas.aplicar_tratamento_sem_stemmer(teste)
     Palavras_teste = dadosBrutos.coletar_palavras(frases_teste)
     frequencia_teste = ferramentas.frequencia_palavras(Palavras_teste)
     base_completa_teste = nltk.classify.apply_features(ferramentas.extrair_palavras_teste, frases_teste)
@@ -65,11 +65,10 @@ def matriz_confusao_sem_stemming(classificador, base_completa_teste):
     return matriz
 
 def analisador_manual_sem_stemming(classificador, frase):
-    teste_sem_stemming = []
-    for (palavras) in frase.split():
-        semStem = [p for p in palavras.split()]
-        teste_sem_stemming.append(str(semStem[0]))
-    novo = ferramentas.extrair_palavras_teste(teste_sem_stemming)
+    testeSemStemming = []
+    for palavra in frase.split():
+        testeSemStemming.append(palavra)
+    novo = ferramentas.extrair_palavras(testeSemStemming)
     distribuicao = classificador.prob_classify(novo)
     for classe in distribuicao.samples():
         print(f"{classe}: {distribuicao.prob(classe):.5}")

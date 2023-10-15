@@ -6,7 +6,7 @@ import Dados as dB
 import Ferramentas as ferramentas
     
 def gerador_de_classificadores():
-    for i in range(1, 11):
+    for i in range(1,11):
         treinamento, teste = ferramentas.separar_dados(str(i))
         treinamentoCS = apCS.tratamento_treinamento(treinamento)
         testeCS = apCS.tratamento_teste(teste)
@@ -32,14 +32,14 @@ def gerador_de_classificadores():
 def analise_erros():
     erros_CS = []
     erros_SS = []
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_com_stemming_{i}.pkl', 'rb') as f:
             classificadorCS = pickle.load(f)
             testeCS = dB.abrir_arquivo_teste(str(i))
             testeCS = apCS.tratamento_teste(testeCS)
             erros_CS.append(apCS.erros_totais(classificadorCS, testeCS))
 
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_sem_stemming_{i}.pkl', 'rb') as f:
             classificadorSS = pickle.load(f)
             testeSS = dB.abrir_arquivo_teste(str(i))
@@ -51,14 +51,14 @@ def analise_erros():
 def analise_acuracia():
     acuracia_CS = []
     acuracia_SS = []
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_com_stemming_{i}.pkl', 'rb') as f:
             classificadorCS = pickle.load(f)
             testeCS = dB.abrir_arquivo_teste(str(i))
             testeCS = apCS.tratamento_teste(testeCS)
             acuracia_CS.append(round(apCS.calcular_acuracia(classificadorCS, testeCS), 5))
 
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_sem_stemming_{i}.pkl', 'rb') as f:
             classificadorSS = pickle.load(f)
             testeSS = dB.abrir_arquivo_teste(str(i))
@@ -70,7 +70,7 @@ def analise_acuracia():
 def analise_precisão(tag):
     precisao_CS = []
     precisao_SS = []
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_com_stemming_{i}.pkl', 'rb') as f:
             classificadorCS = pickle.load(f)
             testeCS = dB.abrir_arquivo_teste(str(i))
@@ -78,7 +78,7 @@ def analise_precisão(tag):
             matrizCS = apCS.matriz_confusao(classificadorCS, testeCS)
             precisao_CS.append(round(apCS.calcular_precisao(matrizCS, tag), 3))
 
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_sem_stemming_{i}.pkl', 'rb') as f:
             classificadorSS = pickle.load(f)
             testeSS = dB.abrir_arquivo_teste(str(i))
@@ -91,7 +91,7 @@ def analise_precisão(tag):
 def analise_recall(tag):
     recall_CS = []
     recall_SS = []
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_com_stemming_{i}.pkl', 'rb') as f:
             classificadorCS = pickle.load(f)
             testeCS = dB.abrir_arquivo_teste(str(i))
@@ -99,7 +99,7 @@ def analise_recall(tag):
             matrizCS = apCS.matriz_confusao(classificadorCS, testeCS)
             recall_CS.append(round(apCS.calcular_recall(matrizCS, tag), 3))
 
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_sem_stemming_{i}.pkl', 'rb') as f:
             classificadorSS = pickle.load(f)
             testeSS = dB.abrir_arquivo_teste(str(i))
@@ -112,7 +112,7 @@ def analise_recall(tag):
 def analise_f1(tag):
     f1_CS = []
     f1_SS = []
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_com_stemming_{i}.pkl', 'rb') as f:
             classificadorCS = pickle.load(f)
             testeCS = dB.abrir_arquivo_teste(str(i))
@@ -120,7 +120,7 @@ def analise_f1(tag):
             matrizCS = apCS.matriz_confusao(classificadorCS, testeCS)
             f1_CS.append(round(apCS.calcular_f1(matrizCS, tag), 3))
 
-    for i in range(1, 11):
+    for i in range(1,11):
         with open(f'Classificadores/classificador_sem_stemming_{i}.pkl', 'rb') as f:
             classificadorSS = pickle.load(f)
             testeSS = dB.abrir_arquivo_teste(str(i))
@@ -162,40 +162,32 @@ def gerador_matriz(selecao):
         matrizSS = apSS.matriz_confusao_sem_stemming(classificadorSS, testeSS)
         print(matrizSS)
 
-def analizador_comparador():
-    frases = []
-    quantidade = 0
-    print("Digite as frases que deseja analisar:")
-    quantidade = int(input())
-    for i in range(0, quantidade):
-        print(f"Digite a frase {i+1}:")
-        frases.append(input())
-    print()
+def palavras_mais_informativas(selecao):
+    with open(f'Classificadores/classificador_com_stemming_{selecao}.pkl', 'rb') as f:
+        classificadorCS = pickle.load(f)
+        print("Com stemming:")
+        print(classificadorCS.show_most_informative_features(20))
+    with open(f'Classificadores/classificador_sem_stemming_{selecao}.pkl', 'rb') as f:
+        classificadorSS = pickle.load(f)
+        print("Sem stemming:")
+        print(classificadorSS.show_most_informative_features(20))
+
+def analizador_comparador(frases = []):
     for i in frases:
         print(f"Analisando a frase: {i}")
         print("Com stemming:\n")
-        for j in range(1, 11):
+        for j in range(1,11):
             print(f"Divisão {j}:")
             with open(f'Classificadores/classificador_com_stemming_{j}.pkl', 'rb') as f:
                 classificadorCS = pickle.load(f)
                 apCS.analisador_manual(classificadorCS, i)
         print("Sem stemming:\n")
-        for j in range(1, 11):
+        for j in range(1,11):
             print(f"Divisão {j}:")
             with open(f'Classificadores/classificador_sem_stemming_{j}.pkl', 'rb') as f:
                 classificadorSS = pickle.load(f)
                 apSS.analisador_manual_sem_stemming(classificadorSS, i)
 
-def analizador_comparador_automatico():
-    for i in range(1, 11):
-        with open(f'Classificadores/classificador_com_stemming_{i}.pkl', 'rb') as f:
-            classificadorCS = pickle.load(f)
-            apCS.teste_automatico(classificadorCS)
-    print("Sem stemming:\n")
-    for i in range(1, 11):
-        with open(f'Classificadores/classificador_sem_stemming_{i}.pkl', 'rb') as f:
-            classificadorSS = pickle.load(f)
-            apSS.teste_automatico_sem_stemming(classificadorSS)
 
 
 

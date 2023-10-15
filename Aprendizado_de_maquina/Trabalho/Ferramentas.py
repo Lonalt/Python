@@ -1,5 +1,6 @@
 import nltk
 import sklearn
+import re
 import numpy as np
 from scipy import stats
 import Dados as dadosBrutos
@@ -25,6 +26,14 @@ def aplicar_stemmer(frases):
         comStemming = [str(stemmer.stem(p)) for p in palavras.split() if stemmer.stem(p) not in stopWords]
         frasesStemming.append((comStemming, sentimento))
     return frasesStemming
+
+def aplicar_tratamento_sem_stemmer(frases):
+    stopWords = criar_stopwords()
+    frases_tratadas = []
+    for (palavras, sentimento) in frases:
+        palavras_sem_stemming = [p for p in palavras.split() if p not in stopWords]
+        frases_tratadas.append((palavras_sem_stemming, sentimento))
+    return frases_tratadas
 
 # frequencia das palavras
 def frequencia_palavras(palavras):
@@ -52,7 +61,6 @@ def extrair_palavras_teste(documento):
     for palavras in palavras_frequentes:
         caracteristicas['%s' % palavras] = (palavras in doc)
     return caracteristicas
-
 
 # calcula media de vetor
 
